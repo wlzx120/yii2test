@@ -10,17 +10,6 @@ return [
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
-        // 配置数据库
-        'db' => [
-            'class' => 'yii\db\Connection',
-            'dsn' => 'mysql:host=localhost;dbname=yii2test',
-            'username' => 'root',
-            'password' => '',
-            'charset' => 'utf8',
-            'enableSchemaCache' => true,
-            'schemaCacheDuration' => 24*3600,
-            'schemaCache' => 'cache',
-        ],
         //url美化
         "urlManager" => [
             //用于表明urlManager是否启用URL美化功能，在Yii1.1中称为path格式URL，
@@ -37,6 +26,11 @@ return [
                 "<controller:\w+>/<id:\d+>"=>"<controller>/view",
                 "<controller:\w+>/<action:\w+>"=>"<controller>/<action>"
             ],
+        ],
+        //authManager有PhpManager和DbManager两种方式,
+        //PhpManager将权限关系保存在文件里,这里使用的是DbManager方式,将权限关系保存在数据库.
+        "authManager" => [
+            "class" => 'yii\rbac\DbManager',
         ],
     ],
 ];
