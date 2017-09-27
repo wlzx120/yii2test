@@ -18,8 +18,8 @@ class BlogSearch extends Blog
     public function rules()
     {
         return [
-            [['id', 'column_id'], 'integer'],
-            [['title', 'content', 'create_at'], 'safe'],
+            [['id', 'column_id', 'review'], 'integer'],
+            [['title', 'content', 'created_at', 'updated_at'], 'safe'],
         ];
     }
 
@@ -61,11 +61,13 @@ class BlogSearch extends Blog
         $query->andFilterWhere([
             'id' => $this->id,
             'column_id' => $this->column_id,
+            'review' => $this->review,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
         ]);
 
         $query->andFilterWhere(['like', 'title', $this->title])
-            ->andFilterWhere(['like', 'content', $this->content])
-            ->andFilterWhere(['like', 'create_at', $this->create_at]);
+            ->andFilterWhere(['like', 'content', $this->content]);
 
         return $dataProvider;
     }

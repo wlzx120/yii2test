@@ -11,7 +11,9 @@ use Yii;
  * @property string $title
  * @property string $content
  * @property integer $column_id
- * @property string $create_at
+ * @property integer $review
+ * @property string $created_at
+ * @property string $updated_at
  */
 class Blog extends \yii\db\ActiveRecord
 {
@@ -29,9 +31,11 @@ class Blog extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            [['title','content','column_id'], 'required'],
             [['content'], 'string'],
-            [['column_id'], 'integer'],
-            [['title', 'create_at'], 'string', 'max' => 255],
+            [['column_id', 'review'], 'integer'],
+            [['created_at', 'updated_at'], 'safe'],
+            [['title'], 'string', 'max' => 255],
         ];
     }
 
@@ -42,10 +46,12 @@ class Blog extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'title' => 'Title',
-            'content' => 'Content',
-            'column_id' => 'Column ID',
-            'create_at' => 'Create At',
+            'title' => '标题',
+            'content' => '内容',
+            'column_id' => '分类',
+            'review' => '审核',
+            'created_at' => '添加时间',
+            'updated_at' => '修改时间',
         ];
     }
 }

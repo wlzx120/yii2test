@@ -3,13 +3,16 @@
 namespace common\models;
 
 use Yii;
+use yii\db\ActiveRecord;
+use yii\behaviors\TimestampBehavior;
 
 /**
  * This is the model class for table "column".
  *
  * @property integer $id
  * @property string $name
- * @property string $create_at
+ * @property string $created_at
+ * @property string $updated_at
  */
 class Column extends \yii\db\ActiveRecord
 {
@@ -27,7 +30,8 @@ class Column extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'create_at'], 'string', 'max' => 255],
+            [['created_at', 'updated_at'], 'safe'],
+            [['name'], 'string', 'max' => 255],
         ];
     }
 
@@ -38,8 +42,23 @@ class Column extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => 'Name',
-            'create_at' => 'Create At',
+            'name' => '分类名称',
+            'created_at' => '添加时间',
+            'updated_at' => '修改时间',
+        ];
+    }
+
+    //自动添加时间
+    public function behaviors()
+    {
+        return [
+            [
+                'class' => TimestampBehavior::className(),
+                'attributes' => [
+                    ActiveRecord::EVENT_BEFORE_INSERT => ['created_at', 'updated_at'],
+                    ActiveRecord::EVENT_BEFORE_UPDATE => ['updated_at'],
+                ],
+            ],
         ];
     }
 }

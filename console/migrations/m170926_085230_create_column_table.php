@@ -16,7 +16,8 @@ class m170926_085230_create_column_table extends Migration
         $this->createTable('column', [
             'id' => Schema::TYPE_PK." comment 'blog分类表id' ",
             'name' => Schema::TYPE_STRING." comment '分类名称' ",
-            'create_at' => Schema::TYPE_STRING." comment '添加时间' "
+            'created_at' => Schema::TYPE_INTEGER." comment '添加时间' ",
+            'updated_at' => Schema::TYPE_INTEGER." comment '修改时间' "
         ]);
     }
 

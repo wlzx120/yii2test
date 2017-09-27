@@ -19,7 +19,7 @@ class ColumnSearch extends Column
     {
         return [
             [['id'], 'integer'],
-            [['name', 'create_at'], 'safe'],
+            [['name', 'created_at', 'updated_at'], 'safe'],
         ];
     }
 
@@ -60,10 +60,11 @@ class ColumnSearch extends Column
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
         ]);
 
-        $query->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'create_at', $this->create_at]);
+        $query->andFilterWhere(['like', 'name', $this->name]);
 
         return $dataProvider;
     }
