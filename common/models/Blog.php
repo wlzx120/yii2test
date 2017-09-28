@@ -3,6 +3,9 @@
 namespace common\models;
 
 use Yii;
+use common\models\Column;
+use yii\behaviors\TimestampBehavior;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "blog".
@@ -17,6 +20,8 @@ use Yii;
  */
 class Blog extends \yii\db\ActiveRecord
 {
+    public $column_name;
+
     /**
      * @inheritdoc
      */
@@ -54,4 +59,31 @@ class Blog extends \yii\db\ActiveRecord
             'updated_at' => '修改时间',
         ];
     }
+
+    //自动添加时间
+    public function behaviors()
+    {
+        return [
+            [
+                'class' => TimestampBehavior::className(),
+                'attributes' => [
+                    ActiveRecord::EVENT_BEFORE_INSERT => ['created_at', 'updated_at'],
+                    ActiveRecord::EVENT_BEFORE_UPDATE => ['updated_at'],
+                ],
+            ],
+        ];
+    }
+
+    //获取所有分类
+    public function getAllColumns()
+    {
+        return Column::find()->select(['name','id'])->indexBy('id')->asArray()->column();
+    }
+
+    //关联分类表
+    public function getColumn()
+    {
+        return $this->hasOne(Column::className(),['id'=>'column_id']);
+    }
+
 }

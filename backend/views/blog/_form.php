@@ -14,10 +14,26 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'column_id')->textInput() ?>
+    <?php
+        if($this->context->action->id == 'update'){
+            echo $form->field($model, 'review')->dropDownList(
+                ['0' => '未审核', '1' => '已审核']
+            );
+        }
+     ?>
 
-    <?= $form->field($model, 'content')->textarea(['rows' => 6]) ?>
+    <?= $form->field($model, 'column_id')->dropDownList(
+        $model->getAllColumns(), ['prompt' => '请选择']
+    ) ?>
 
+    <?= $form->field($model,'content')->widget('common\widgets\ueditor\Ueditor', [
+        'options'=>[
+            'initialFrameWidth' => '100%',
+            'initialFrameHeight' => '500',
+        ]
+    ])?>
+
+    <!-- <?= $form->field($model, 'content')->textarea(['rows' => 6]) ?> -->
 
 <!--<?//= $form->field($model, 'created_at')->textInput() ?>
 

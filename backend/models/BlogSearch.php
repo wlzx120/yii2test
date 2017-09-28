@@ -19,7 +19,7 @@ class BlogSearch extends Blog
     {
         return [
             [['id', 'column_id', 'review'], 'integer'],
-            [['title', 'content', 'created_at', 'updated_at'], 'safe'],
+            [['title', 'content', 'created_at', 'updated_at','column_name'], 'safe'],
         ];
     }
 
@@ -57,6 +57,9 @@ class BlogSearch extends Blog
             return $dataProvider;
         }
 
+        //联表查询
+        $query->joinWith('column')->select(['blog.*','column.name']);
+
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
@@ -66,9 +69,17 @@ class BlogSearch extends Blog
             'updated_at' => $this->updated_at,
         ]);
 
+        //查询条件
         $query->andFilterWhere(['like', 'title', $this->title])
-            ->andFilterWhere(['like', 'content', $this->content]);
+            ->andFilterWhere(['like', 'content', $this->content])
+            ->andFilterWhere(['like', 'column.name', $this->column_name]);
 
+        //联表查询添加排序
+        $dataProvider->sort->attributes['column_name'] =
+            [
+                'asc' => ['column_name' => SORT_ASC ],
+                'desc' => ['column_name' => SORT_DESC]
+            ];
         return $dataProvider;
     }
 }

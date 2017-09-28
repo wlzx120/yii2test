@@ -29,6 +29,21 @@ class BlogController extends Controller
         ];
     }
 
+    //ueditor
+    public function actions()
+    {
+        return [
+            'ueditor'=>[
+                'class' => 'common\widgets\ueditor\UeditorAction',
+                'config'=>[
+                    //上传图片配置
+                    'imageUrlPrefix' => "", /* 图片访问路径前缀 */
+                    'imagePathFormat' => "/images/{yyyy}{mm}{dd}/{time}{rand:6}", /* 上传保存路径,可以自定义保存路径和文件名格式 */
+                ]
+            ]
+        ];
+    }
+
     /**
      * Lists all Blog models.
      * @return mixed
@@ -64,7 +79,6 @@ class BlogController extends Controller
     public function actionCreate()
     {
         $model = new Blog();
-
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
