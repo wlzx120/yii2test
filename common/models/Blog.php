@@ -54,6 +54,7 @@ class Blog extends \yii\db\ActiveRecord
             'title' => '标题',
             'content' => '内容',
             'column_id' => '分类',
+            'image' => '图片',
             'review' => '审核',
             'created_at' => '添加时间',
             'updated_at' => '修改时间',
