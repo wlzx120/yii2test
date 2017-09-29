@@ -8,6 +8,9 @@ use backend\models\BlogSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use common\components\Upload;
+use yii\web\Response;
+//use yii\filters\AccessControl;
 
 /**
  * BlogController implements the CRUD actions for Blog model.
@@ -20,12 +23,23 @@ class BlogController extends Controller
     public function behaviors()
     {
         return [
+//            'access' => [
+//                'class' => AccessControl::className(),
+//                'rules' => [
+//                    [
+//                        'actions' => ['index','view','create','update','delete','ueditor','upload'],
+//                        'allow' => true,
+//                        'roles' => ['@'],
+//                    ],
+//                ],
+//            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['POST'],
                 ],
             ],
+
         ];
     }
 
@@ -52,7 +66,7 @@ class BlogController extends Controller
     {
         $searchModel = new BlogSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
+        $dataProvider->pagination = ['pagesize' => '2'];
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -97,9 +111,11 @@ class BlogController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post())) {
+            $model->image = implode(',',$model->image);
+            if($model->save()){
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
         } else {
             return $this->render('update', [
                 'model' => $model,
@@ -135,4 +151,22 @@ class BlogController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+
+    //webUploader上传
+    public function actionUpload()
+    {
+        try {
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            $model = new Upload();
+            $info = $model->upImage();
+            if ($info && is_array($info)) {
+                return $info;
+            } else {
+                return ['code' => 1, 'msg' => 'error'];
+            }
+        } catch (\Exception $e) {
+            return ['code' => 1, 'msg' => $e->getMessage()];
+        }
+    }
+
 }

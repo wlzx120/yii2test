@@ -15,6 +15,16 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
 
     <?php
+        echo $form->field($model, 'image')->widget('manks\FileInput', [
+            //多个图片上传需添加以下参数
+            'clientOptions' => [
+                'pick' => [
+                    'multiple' => true,
+                ],
+            ],
+    ]); ?>
+
+    <?php
         if($this->context->action->id == 'update'){
             echo $form->field($model, 'review')->dropDownList(
                 ['0' => '未审核', '1' => '已审核']

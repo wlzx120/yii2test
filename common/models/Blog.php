@@ -39,7 +39,7 @@ class Blog extends \yii\db\ActiveRecord
             [['title','content','column_id'], 'required'],
             [['content'], 'string'],
             [['column_id', 'review'], 'integer'],
-            [['created_at', 'updated_at'], 'safe'],
+            [['created_at', 'updated_at','image','image2'], 'safe'],
             [['title'], 'string', 'max' => 255],
         ];
     }

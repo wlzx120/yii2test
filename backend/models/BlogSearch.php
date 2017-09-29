@@ -63,7 +63,6 @@ class BlogSearch extends Blog
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'column_id' => $this->column_id,
             'review' => $this->review,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
@@ -77,8 +76,8 @@ class BlogSearch extends Blog
         //联表查询添加排序
         $dataProvider->sort->attributes['column_name'] =
             [
-                'asc' => ['column_name' => SORT_ASC ],
-                'desc' => ['column_name' => SORT_DESC]
+                'asc' => ['column_id' => SORT_ASC ],
+                'desc' => ['column_id' => SORT_DESC]
             ];
         return $dataProvider;
     }
