@@ -6,12 +6,22 @@ use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use common\models\LoginForm;
+use common\components\MailEvent;
 
 /**
  * Site controller
  */
 class SiteController extends Controller
 {
+    //定义事件
+    const SEND_MAIL = 'send_mail';
+    public function init()
+    {
+        parent::init();
+        //初始化绑定事件
+        $this->on(self::SEND_MAIL,['common\components\Mail','sendMail']);
+    }
+
     /**
      * @inheritdoc
      */
@@ -26,7 +36,7 @@ class SiteController extends Controller
                         'allow' => true,
                     ],
                     [
-                        'actions' => ['logout', 'index'],
+                        'actions' => ['logout', 'index','send-mail'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -92,7 +102,20 @@ class SiteController extends Controller
     public function actionLogout()
     {
         Yii::$app->user->logout();
-
         return $this->goHome();
     }
+
+    //邮件发送
+    public function actionSendMail()
+    {
+        $event = new MailEvent();
+        $event->email = '270077706@qq.com';
+        $event->subject = '测试邮件';
+        $event->content = '事件发送邮件内容';
+        $event->email = '270077706@qq.com';
+        $this->trigger(self::SEND_MAIL,$event);
+    }
+
+
+
 }

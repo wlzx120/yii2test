@@ -54,6 +54,35 @@ return [
             'defaultRoles' => ['guest'],
         ],
         //yii2-admin-
+        //数据库
+        'db' => [
+            'class' => 'yii\db\Connection',
+            'dsn' => 'mysql:host=localhost;dbname=yii2test',
+            'username' => 'root',
+            'password' => '',
+            'charset' => 'utf8',
+            'enableSchemaCache' => true,
+            'schemaCacheDuration' => 24*3600,
+            'schemaCache' => 'cache',
+        ],
+        //邮件
+        'mailer' => [
+            'class' => 'yii\swiftmailer\Mailer',
+            'viewPath' => '@common/mail',
+            'useFileTransport' => false,
+            'transport' => [
+                'class' => 'Swift_SmtpTransport',
+                'host' => 'smtp.163.com',
+                'username' => 'wlzx120@163.com',
+                'password' => 'csg123456',
+                'port' => '25',
+                'encryption' => 'tls',
+            ],
+            'messageConfig'=>[
+                'charset'=>'UTF-8',
+                'from'=>['wlzx120@163.com'=>'Blog站点']
+            ],
+        ],
     ],
     //yii2-admin+
     'as access' => [
